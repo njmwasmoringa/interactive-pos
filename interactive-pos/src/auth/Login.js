@@ -9,7 +9,7 @@ function Login({onSignIn}) {
     function signIn(evt){
         evt.preventDefault();
         if(formData.username.trim() != "" && formData.password.trim() !== ""){
-            fetch("http://localhost:3001/users").then(resp=>resp.json()).then(users=>{
+            fetch("/db.json").then(resp=>resp.json()).then(({users})=>{
                 const user = users.find(u=>u.username === formData.username && u.password===formData.password);
                 onSignIn(user);
             });

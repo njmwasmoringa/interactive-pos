@@ -44,9 +44,9 @@ function Order({ orderNumber=1, customerNumber=1, onNewOrder=()=>{}, user }) {
 
     useEffect(() => {
 
-        fetch("http://localhost:3001/products")
+        fetch("/db.json")
             .then(resp => resp.json())
-            .then(products => {
+            .then(({products}) => {
                 setSearchedItems(products.filter(product => product.name.toLowerCase().substring(0, productSearchValue.length) === productSearchValue.toLowerCase()));
             });
 
