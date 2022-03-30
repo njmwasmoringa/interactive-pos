@@ -6,14 +6,19 @@ import Order from "./order/Order";
 import { useState } from "react";
 import Orders from "./orders/orders";
 
-function App() {
 
-  const [base, setBase] = useState('/interactive-pos');
-  
+function App() {  
+
+  const base = '';
+
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
   const [customerNumber, setCustomerNumber] = useState(1);
   const navigate = useNavigate();
+
+  if(sessionStorage.getItem("user")){
+    setUser(JSON.parse(sessionStorage.getItem("user")));
+  }
 
   function newOrder(order){
     setOrders([...orders, order]);
@@ -22,7 +27,7 @@ function App() {
 
   function checkoutOrder(order){
     setOrders(orders.map((o, i)=>{
-      if(o.orderNumber == order.orderNumber){
+      if(o.orderNumber === order.orderNumber){
         o.checkedOut = true;
       }
       return o;
@@ -31,12 +36,13 @@ function App() {
 
   function signout(){
     setUser(null);
+    sessionStorage.removeItem("user");
     navigate("");
   }
 
   return (
     <div>
-      <TopNav user={user} onSignOut={signout} base={base} />      
+      <TopNav onSignOut={signout} base={base} />      
       <Routes>
           <Route path={base+'/'} element={<Login onSignIn={(usr)=>setUser(usr)} />} />
           <Route 
@@ -47,7 +53,7 @@ function App() {
               onNewOrder={newOrder}
               base={base}
             />} />
-            <Route user={user} path={base+"/orders"} element={<Orders orders={orders} onCheckout={checkoutOrder} />} />
+            <Route path={base+"/orders"} element={<Orders orders={orders} onCheckout={checkoutOrder} />} />
           <Route path="**" element={<div>404 Page not found</div>} />
         </Routes>
     </div>

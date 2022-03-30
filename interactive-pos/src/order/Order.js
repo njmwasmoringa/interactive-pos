@@ -21,10 +21,10 @@ function Order({ orderNumber=1, customerNumber=1, onNewOrder=()=>{}, user, base 
 
     function orderProduct(evt) {
         evt.preventDefault();
-        const existingProductIndex = order.findIndex(p => p.code == selectedProduct.code);
+        const existingProductIndex = order.findIndex(p => p.code === selectedProduct.code);
         if (existingProductIndex > -1) {
             setOrder(order.map((p, i) => {
-                if (i == existingProductIndex) {
+                if (i === existingProductIndex) {
                     p.qty += selectedProduct.qty;
                 }
                 return p;
@@ -44,15 +44,15 @@ function Order({ orderNumber=1, customerNumber=1, onNewOrder=()=>{}, user, base 
 
     useEffect(() => {
 
-        fetch("/interactive-pos/db.json")
+        fetch("http://localhost:3001/products")
             .then(resp => resp.json())
-            .then(({products}) => {
+            .then((products) => {
                 setSearchedItems(products.filter(product => product.name.toLowerCase().substring(0, productSearchValue.length) === productSearchValue.toLowerCase()));
             });
 
     }, [productSearchValue]);
 
-    if(!user){
+    if(!sessionStorage.getItem("user")){
         navigate("");
         return (<h4>Restricted Access</h4>)
     }

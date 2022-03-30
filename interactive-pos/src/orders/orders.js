@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "../modal";
 
-function Orders({ orders = [], onCheckout = ()=>{}, user }) {
+function Orders({ orders = [], onCheckout = ()=>{} }) {
 
     const navigate = useNavigate();
     
@@ -14,7 +14,7 @@ function Orders({ orders = [], onCheckout = ()=>{}, user }) {
     }
 
     
-    if(!user){
+    if(!sessionStorage.getItem("user")){
         navigate("");
         return (<h4>Restricted Access</h4>)
     }

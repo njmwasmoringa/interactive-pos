@@ -11,9 +11,11 @@ function Login({ onSignIn, base }) {
         evt.preventDefault();
         if (formData.username && formData.password) {
             setMessage(null);
-            fetch("/interactive-pos/db.json").then(resp => resp.json()).then(({ users }) => {
+            fetch("http://localhost:3001/users").then(resp => resp.json()).then((users) => {
                 const user = users.find(u => u.username === formData.username && u.password === formData.password);
                 if (user) {
+                    delete user.password;
+                    sessionStorage.setItem(JSON.stringify(user))
                     onSignIn(user);
                     navigate("order");
                 }
