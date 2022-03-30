@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "./userProvider";
 
-function Login({ onSignIn, base }) {
+function Login({ base }) {
 
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState({username:"", password:""});
     const [message, setMessage] = useState(null);
     const navigate = useNavigate();
+    const [user, setUser] = useContext(UserContext);
 
     function signIn(evt) {
         evt.preventDefault();
@@ -15,9 +17,8 @@ function Login({ onSignIn, base }) {
                 const user = users.find(u => u.username === formData.username && u.password === formData.password);
                 if (user) {
                     delete user.password;
-                    sessionStorage.setItem(JSON.stringify(user))
-                    onSignIn(user);
-                    navigate("order");
+                    // sessionStorage.setItem("user", JSON.stringify(user));
+                    setUser(user);
                 }
                 else{
                     setMessage("Invalid username or password");
@@ -38,6 +39,13 @@ function Login({ onSignIn, base }) {
         setFormData({ ...formData, [name]: value });
     }
 
+    useEffect(()=>{
+        console.log("Effect is run")
+        if(user){
+            navigate("order")
+        }
+    }, [user]);
+
     return (
         <div className="pos-display-flex pos-flex-justify-center pos-flex-column pos-flex-justify-between pos-page">
             <form id="login" className="pos-align-self-center pos-card pos-w-30" onSubmit={signIn}>
@@ -49,12 +57,12 @@ function Login({ onSignIn, base }) {
                     {message && <div style={{color:"red"}}>{message}</div>}
                     <div className="form-group pos-w-100">
                         <label>Username</label>
-                        <input type="text" name="username" value={formData.username} onChange={setField} className="pos-w-90" />
+                        <input type="text" name="username" value={formData.username} onChange={setField} className="pos-w-90" required />
                     </div>
 
                     <div className="form-group">
                         <label>Password</label>
-                        <input type="password" name="password" value={formData.password} onChange={setField} className="pos-w-90" />
+                        <input type="password" name="password" value={formData.password} onChange={setField} className="pos-w-90" required />
                     </div>
                 </div>
                 <div className="pos-card-footer">

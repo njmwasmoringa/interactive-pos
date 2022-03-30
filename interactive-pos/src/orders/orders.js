@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../auth/userProvider";
 import Modal from "../modal";
 
 function Orders({ orders = [], onCheckout = ()=>{} }) {
@@ -7,17 +8,20 @@ function Orders({ orders = [], onCheckout = ()=>{} }) {
     const navigate = useNavigate();
     
     const [checkoutOrder, setCheckoutOrder] = useState(null);
+    const [user, setUser] = useContext(UserContext);
+    
+    
     
     function checkout(){
         onCheckout(checkoutOrder);
         setCheckoutOrder(null);
     }
-
     
-    if(!sessionStorage.getItem("user")){
-        navigate("");
-        return (<h4>Restricted Access</h4>)
-    }
+    useEffect(()=>{
+        if(user == null){
+            navigate("/")
+        }
+    }, [user]);
 
     return (
         <>

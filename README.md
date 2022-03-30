@@ -15,6 +15,4 @@ This is an interactive Point of Sale system build in react
 - Checkout the order by providing delivery
 
 # How to install
- - Install json-server and run it 
-
-# Username and password
+ - Install json-server and run it on port 3001

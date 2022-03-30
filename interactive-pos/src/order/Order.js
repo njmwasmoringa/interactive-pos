@@ -1,19 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../auth/userProvider';
 import Modal from '../modal';
 import Processorder from '../process-order';
 import './order.css';
 
-function Order({ orderNumber=1, customerNumber=1, onNewOrder=()=>{}, user, base }) {
+function Order({ orderNumber = 1, customerNumber = 1, onNewOrder = () => { } }) {
 
     const navigate = useNavigate();
-    
+
     const [modal, setModal] = useState(false);
     const [productSearchValue, setProductSearchValue] = useState("");
     const [productSearchFocus, setProductSearchFocus] = useState(false);
     const [searchedItems, setSearchedItems] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [order, setOrder] = useState([]);
+    const [user, setUser] = useContext(UserContext);
 
     function toggleModal() {
         setModal(!modal);
@@ -36,7 +38,7 @@ function Order({ orderNumber=1, customerNumber=1, onNewOrder=()=>{}, user, base 
         setSelectedProduct(null);
     }
 
-    function orderProcessed(purchaseOrder){
+    function orderProcessed(purchaseOrder) {
         toggleModal();
         onNewOrder(purchaseOrder);
         setOrder([]);
@@ -44,26 +46,26 @@ function Order({ orderNumber=1, customerNumber=1, onNewOrder=()=>{}, user, base 
 
     useEffect(() => {
 
+        if (user == null) {
+            navigate("/")
+        }
+
         fetch("http://localhost:3001/products")
             .then(resp => resp.json())
             .then((products) => {
                 setSearchedItems(products.filter(product => product.name.toLowerCase().substring(0, productSearchValue.length) === productSearchValue.toLowerCase()));
             });
 
-    }, [productSearchValue]);
+    }, [productSearchValue, user]);
 
-    if(!sessionStorage.getItem("user")){
-        navigate("");
-        return (<h4>Restricted Access</h4>)
-    }
 
     return (
         <>
             {/* Process Order Modal */}
             {modal && <Modal
-                component={<Processorder 
-                    order={{products:order}}
-                    onProcess={(purchaseOrder)=>orderProcessed(purchaseOrder)}
+                component={<Processorder
+                    order={{ products: order }}
+                    onProcess={(purchaseOrder) => orderProcessed(purchaseOrder)}
                     customerNumber={customerNumber}
                     orderNumber={orderNumber}
                 />}

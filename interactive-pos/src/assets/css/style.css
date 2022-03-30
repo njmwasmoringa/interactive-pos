@@ -12,6 +12,7 @@
     background-color: white;
 }
 
+
 .pos-display-flex{
     display: flex;
     padding: 0 20px 0 20px;
@@ -69,6 +70,14 @@
     color:black
 }
 
+.pos-btn-primary{
+    background-color: var(--primary-color);
+}
+
+.pos-btn-secondary{
+    background-color: var(--secondary-color);
+}
+
 a.pos-btn{
     color: black !important;
 }
@@ -83,6 +92,10 @@ a.pos-btn:active{
 
 .pos-margin-0{
     margin:0 !important;
+}
+
+.pos-margin-5{
+    margin:5 !important;
 }
 
 .pos-padding-5{    
