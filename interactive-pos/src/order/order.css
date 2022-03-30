@@ -1,0 +1,24 @@
+.pos-card-body{
+    min-height: 350px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.search-results{
+    position: absolute;
+    background: white;
+    margin-top: 40px;
+    box-shadow: 0 0 5px var(---border-color);
+    margin-left: -10px;
+}
+
+.search-results a{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    text-decoration: none;
+}
+
+.search-results a:hover{
+    background-color: var(--secondary-color);
+}
