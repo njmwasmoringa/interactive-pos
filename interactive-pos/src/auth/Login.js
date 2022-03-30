@@ -9,9 +9,9 @@ function Login({ onSignIn, base }) {
 
     function signIn(evt) {
         evt.preventDefault();
-        if (formData.username.trim() != "" && formData.password.trim() !== "") {
+        if (formData.username && formData.password) {
             setMessage(null);
-            fetch(`${base}/db.json`).then(resp => resp.json()).then(({ users }) => {
+            fetch("/interactive-pos/db.json").then(resp => resp.json()).then(({ users }) => {
                 const user = users.find(u => u.username === formData.username && u.password === formData.password);
                 if (user) {
                     onSignIn(user);
@@ -20,14 +20,18 @@ function Login({ onSignIn, base }) {
                 else{
                     setMessage("Invalid username or password");
                 }
+            })
+            .catch(e=>{
+                setMessage("Something went wrong");
             });
         }
-
+        else{
+            setMessage("Invalid username or password");
+        }
     }
 
     function setField(event) {
         const name = event.target.name;
-        console.log(name)
         const value = event.target.value;
         setFormData({ ...formData, [name]: value });
     }

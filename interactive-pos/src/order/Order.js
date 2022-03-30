@@ -44,7 +44,7 @@ function Order({ orderNumber=1, customerNumber=1, onNewOrder=()=>{}, user, base 
 
     useEffect(() => {
 
-        fetch(`${base}/db.json`)
+        fetch("/interactive-pos/db.json")
             .then(resp => resp.json())
             .then(({products}) => {
                 setSearchedItems(products.filter(product => product.name.toLowerCase().substring(0, productSearchValue.length) === productSearchValue.toLowerCase()));

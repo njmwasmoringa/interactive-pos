@@ -6,10 +6,10 @@ import Order from "./order/Order";
 import { useState } from "react";
 import Orders from "./orders/orders";
 
-const base = '/interactive-pos';
-
 function App() {
 
+  const [base, setBase] = useState('/interactive-pos');
+  
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
   const [customerNumber, setCustomerNumber] = useState(1);
