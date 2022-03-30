@@ -11,8 +11,8 @@ This is an interactive Point of Sale system build in react
 - Select the product you want
 - Enter a quantity
 - once you are done click on "Complete Order"
-- Navigate to order to see all the orders done
-- Checkout the order
+- Navigate to orders to see all the orders done
+- Checkout the order by providing delivery
 
 # How to install
  - Install json-server and run it 
