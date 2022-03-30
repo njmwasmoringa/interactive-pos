@@ -6,6 +6,8 @@ import Order from "./order/Order";
 import { useState } from "react";
 import Orders from "./orders/orders";
 
+const base = '/interactive-pos';
+
 function App() {
 
   const [user, setUser] = useState(null);
@@ -34,17 +36,19 @@ function App() {
 
   return (
     <div>
-      <TopNav user={user} onSignOut={signout} />      
+      <TopNav user={user} onSignOut={signout} base={base} />      
       <Routes>
-          <Route path="/" element={<Login onSignIn={(usr)=>setUser(usr)} />} />
+          <Route path={base+'/'} element={<Login onSignIn={(usr)=>setUser(usr)} />} />
           <Route 
-            path="/order" element={<Order 
+            path={base+"/order"} element={<Order 
               user={user}
               orderNumber={orders.length + 1} 
               customerNumber={customerNumber}
               onNewOrder={newOrder}
+              base={base}
             />} />
-            <Route user={user} path="/orders" element={<Orders orders={orders} onCheckout={checkoutOrder} />} />
+            <Route user={user} path={base+"/orders"} element={<Orders orders={orders} onCheckout={checkoutOrder} />} />
+          <Route path="**" element={<div>404 Page not found</div>} />
         </Routes>
     </div>
   );

@@ -4,7 +4,7 @@ import Modal from '../modal';
 import Processorder from '../process-order';
 import './order.css';
 
-function Order({ orderNumber=1, customerNumber=1, onNewOrder=()=>{}, user }) {
+function Order({ orderNumber=1, customerNumber=1, onNewOrder=()=>{}, user, base }) {
 
     const navigate = useNavigate();
     
@@ -44,7 +44,7 @@ function Order({ orderNumber=1, customerNumber=1, onNewOrder=()=>{}, user }) {
 
     useEffect(() => {
 
-        fetch("/db.json")
+        fetch(`${base}/db.json`)
             .then(resp => resp.json())
             .then(({products}) => {
                 setSearchedItems(products.filter(product => product.name.toLowerCase().substring(0, productSearchValue.length) === productSearchValue.toLowerCase()));

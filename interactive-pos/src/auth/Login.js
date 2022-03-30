@@ -1,27 +1,35 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Login({onSignIn}) {
+function Login({ onSignIn, base }) {
 
     const [formData, setFormData] = useState({});
+    const [message, setMessage] = useState(null);
     const navigate = useNavigate();
 
-    function signIn(evt){
+    function signIn(evt) {
         evt.preventDefault();
-        if(formData.username.trim() != "" && formData.password.trim() !== ""){
-            fetch("/db.json").then(resp=>resp.json()).then(({users})=>{
-                const user = users.find(u=>u.username === formData.username && u.password===formData.password);
-                onSignIn(user);
+        if (formData.username.trim() != "" && formData.password.trim() !== "") {
+            setMessage(null);
+            fetch(`${base}/db.json`).then(resp => resp.json()).then(({ users }) => {
+                const user = users.find(u => u.username === formData.username && u.password === formData.password);
+                if (user) {
+                    onSignIn(user);
+                    navigate("order");
+                }
+                else{
+                    setMessage("Invalid username or password");
+                }
             });
         }
-        navigate("order");
+
     }
 
-    function setField(event){
+    function setField(event) {
         const name = event.target.name;
         console.log(name)
         const value = event.target.value;
-        setFormData({...formData, [name]:value});
+        setFormData({ ...formData, [name]: value });
     }
 
     return (
@@ -32,6 +40,7 @@ function Login({onSignIn}) {
                 </div>
                 <hr />
                 <div className="pos-card-body">
+                    {message && <div style={{color:"red"}}>{message}</div>}
                     <div className="form-group pos-w-100">
                         <label>Username</label>
                         <input type="text" name="username" value={formData.username} onChange={setField} className="pos-w-90" />
