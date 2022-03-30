@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Modal from '../modal';
 import Processorder from '../process-order';
 import './order.css';
 
-function Order({ orderNumber=1, customerNumber=1, onNewOrder=()=>{} }) {
+function Order({ orderNumber=1, customerNumber=1, onNewOrder=()=>{}, user }) {
 
+    const navigate = useNavigate();
+    
     const [modal, setModal] = useState(false);
     const [productSearchValue, setProductSearchValue] = useState("");
     const [productSearchFocus, setProductSearchFocus] = useState(false);
@@ -49,6 +52,10 @@ function Order({ orderNumber=1, customerNumber=1, onNewOrder=()=>{} }) {
 
     }, [productSearchValue]);
 
+    if(!user){
+        navigate("");
+        return (<h4>Restricted Access</h4>)
+    }
 
     return (
         <>

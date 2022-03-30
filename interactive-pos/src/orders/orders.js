@@ -1,13 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Modal from "../modal";
 
-function Orders({ orders = [], onCheckout = ()=>{} }) {
+function Orders({ orders = [], onCheckout = ()=>{}, user }) {
 
+    const navigate = useNavigate();
+    
     const [checkoutOrder, setCheckoutOrder] = useState(null);
     
     function checkout(){
         onCheckout(checkoutOrder);
         setCheckoutOrder(null);
+    }
+
+    
+    if(!user){
+        navigate("");
+        return (<h4>Restricted Access</h4>)
     }
 
     return (

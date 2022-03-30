@@ -1,5 +1,5 @@
 import { TopNav } from "./TopNav";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import './App.css';
 import Login from "./auth/Login";
 import Order from "./order/Order";
@@ -8,8 +8,10 @@ import Orders from "./orders/orders";
 
 function App() {
 
+  const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
   const [customerNumber, setCustomerNumber] = useState(1);
+  const navigate = useNavigate();
 
   function newOrder(order){
     setOrders([...orders, order]);
@@ -25,19 +27,24 @@ function App() {
     }));
   }
 
+  function signout(){
+    setUser(null);
+    navigate("");
+  }
+
   return (
     <div>
-      <TopNav />      
+      <TopNav user={user} onSignOut={signout} />      
       <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Login onSignIn={(usr)=>setUser(usr)} />} />
           <Route 
             path="/order" element={<Order 
+              user={user}
               orderNumber={orders.length + 1} 
               customerNumber={customerNumber}
               onNewOrder={newOrder}
             />} />
-
-            <Route path="/orders" element={<Orders orders={orders} onCheckout={checkoutOrder} />} />
+            <Route user={user} path="/orders" element={<Orders orders={orders} onCheckout={checkoutOrder} />} />
         </Routes>
     </div>
   );

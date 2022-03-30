@@ -1,12 +1,20 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function Login() {
+function Login({onSignIn}) {
 
     const [formData, setFormData] = useState({});
+    const navigate = useNavigate();
 
     function signIn(evt){
         evt.preventDefault();
-        console.log(formData);
+        if(formData.username.trim() != "" && formData.password.trim() !== ""){
+            fetch("http://localhost:3001/users").then(resp=>resp.json()).then(users=>{
+                const user = users.find(u=>u.username === formData.username && u.password===formData.password);
+                onSignIn(user);
+            });
+        }
+        navigate("order");
     }
 
     function setField(event){
