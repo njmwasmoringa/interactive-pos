@@ -1,21 +1,37 @@
+import { useState } from "react";
 
 function Login() {
+
+    const [formData, setFormData] = useState({});
+
+    function signIn(evt){
+        evt.preventDefault();
+        console.log(formData);
+    }
+
+    function setField(event){
+        const name = event.target.name;
+        console.log(name)
+        const value = event.target.value;
+        setFormData({...formData, [name]:value});
+    }
+
     return (
         <div className="pos-display-flex pos-flex-justify-center pos-flex-column pos-flex-justify-between pos-page">
-            <form id="login" className="pos-align-self-center pos-card">
+            <form id="login" className="pos-align-self-center pos-card pos-w-30" onSubmit={signIn}>
                 <div className="pos-card-header">
                     <h3>Sign In</h3>
                 </div>
                 <hr />
-                <div className="pos-card-header">
-                    <div className="form-group">
+                <div className="pos-card-body">
+                    <div className="form-group pos-w-100">
                         <label>Username</label>
-                        <input type="text" />
+                        <input type="text" name="username" value={formData.username} onChange={setField} className="pos-w-90" />
                     </div>
 
                     <div className="form-group">
                         <label>Password</label>
-                        <input type="password" />
+                        <input type="password" name="password" value={formData.password} onChange={setField} className="pos-w-90" />
                     </div>
                 </div>
                 <div className="pos-card-footer">
